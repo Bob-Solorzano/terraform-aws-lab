@@ -95,9 +95,6 @@ resource "aws_launch_template" "web" {
   #Manual Kernal Override
 #  kernel_id = "test"
 
-  # For Key-Pair
-  key_name = aws_key_pair.tf_keypair.key_name
-
   # Only needed for Licensed environments...
 #  license_specification {
 #    license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
@@ -171,9 +168,4 @@ resource "aws_autoscaling_group" "this" {
       min_healthy_percentage = 0
     }
   }
-}
-
-resource "aws_key_pair" "tf_keypair" {
-  key_name   = "terraform-lab-key"
-  public_key = file(pathexpand("~/.ssh/terraform_lab_key.pub"))
 }
