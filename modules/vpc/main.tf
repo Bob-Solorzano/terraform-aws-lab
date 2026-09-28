@@ -87,7 +87,7 @@ resource "aws_nat_gateway" "this" {
   subnet_id = values(aws_subnet.public)[0].id
 
   depends_on = [
-      aws_internet_gateway.this
+    aws_internet_gateway.this
   ]
 }
 

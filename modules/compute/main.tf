@@ -58,21 +58,21 @@ resource "aws_launch_template" "web" {
     device_name = "/dev/sdf"
 
     ebs {
-      volume_size = 20
-      volume_type = "gp3"
-      encrypted = true
+      volume_size           = 20
+      volume_type           = "gp3"
+      encrypted             = true
       delete_on_termination = true
     }
   }
 
-# Limit EC2 from being stopped by API, console, ...
+  # Limit EC2 from being stopped by API, console, ...
   #  disable_api_stop        = true
 
   # Limit EC2 from being stopped by API, console, ...
-#  disable_api_termination = true
+  #  disable_api_termination = true
 
   # Most recent EBS Volumes already include this.
- # ebs_optimized = true
+  # ebs_optimized = true
 
   #IAM Profile assignment
   iam_instance_profile {
@@ -93,12 +93,12 @@ resource "aws_launch_template" "web" {
   instance_type = var.instance_type
 
   #Manual Kernal Override
-#  kernel_id = "test"
+  #  kernel_id = "test"
 
   # Only needed for Licensed environments...
-#  license_specification {
-#    license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
-#  }
+  #  license_specification {
+  #    license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
+  #  }
 
   metadata_options {
     http_endpoint               = "enabled"
@@ -108,22 +108,22 @@ resource "aws_launch_template" "web" {
   }
 
   # Increase Cloudwatch monitoring to every 1 min.  Override 5 minute default
-#  monitoring {
-#    enabled = true
-#  }
+  #  monitoring {
+  #    enabled = true
+  #  }
 
   # Create and manage Network Interface  Address???
-#  network_interfaces {
-#    associate_public_ip_address = true
-#  }
+  #  network_interfaces {
+  #    associate_public_ip_address = true
+  #  }
 
   # Hardcode the templates to a specific AZ... Already using multi AZ in subnets.
-#  placement {
-#    availability_zone = "us-west-2a"
-#  }
+  #  placement {
+  #    availability_zone = "us-west-2a"
+  #  }
 
   #Specify a specific RAM Disk ID
-#  ram_disk_id = "test"
+  #  ram_disk_id = "test"
 
   vpc_security_group_ids = var.vpc_security_group_ids
 
@@ -137,23 +137,23 @@ resource "aws_launch_template" "web" {
 
   user_data = base64encode(
     templatefile("${path.module}/user_data/bootstrap.sh", {
-      httpd_script          = file("${path.module}/user_data/httpd.sh")
-      cloudwatch_script     = file("${path.module}/user_data/cloudwatch_agent.sh")
+      httpd_script      = file("${path.module}/user_data/httpd.sh")
+      cloudwatch_script = file("${path.module}/user_data/cloudwatch_agent.sh")
     })
   )
-#  user_data = filebase64("${path.module}/user_data/bootstrap.sh")
-#  user_data = filebase64("./httpd.sh")
-#  user_data = var.user_data
+  #  user_data = filebase64("${path.module}/user_data/bootstrap.sh")
+  #  user_data = filebase64("./httpd.sh")
+  #  user_data = var.user_data
 }
 
 resource "aws_autoscaling_group" "this" {
   vpc_zone_identifier = var.private_subnet_ids
-  desired_capacity   = var.asg_desired_capacity
-  max_size           = var.asg_max_size
-  min_size           = var.asg_min_size
+  desired_capacity    = var.asg_desired_capacity
+  max_size            = var.asg_max_size
+  min_size            = var.asg_min_size
 
-  target_group_arns = [var.target_group_arn]
-  health_check_type = "ELB"
+  target_group_arns         = [var.target_group_arn]
+  health_check_type         = "ELB"
   health_check_grace_period = 300
 
   launch_template {

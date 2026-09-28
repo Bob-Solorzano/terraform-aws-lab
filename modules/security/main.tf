@@ -33,7 +33,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "this" {
- for_each = var.egress_sg_rules
+  for_each = var.egress_sg_rules
 
   security_group_id = aws_security_group.this[each.value.security_group].id
 
