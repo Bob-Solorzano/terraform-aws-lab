@@ -40,14 +40,11 @@ private_subnet_cidrs = [
   "10.10.12.0/24"
 ]
 
-# CIDR list for Private subnets
-# To host:
-# - Databases
-
-#private_subnet_db_cidrs = [
-#  "10.10.21.0/24",
-#  "10.10.22.0/24"
-#]
+# Dedicated database subnets, separate from application-private subnets.
+database_subnet_cidrs = [
+  "10.10.21.0/24",
+  "10.10.22.0/24"
+]
 
 #############################################
 # Security Settings

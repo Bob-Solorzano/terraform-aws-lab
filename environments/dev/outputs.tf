@@ -13,6 +13,11 @@ output "private_subnet_ids" {
   value = module.vpc.private_subnet_ids
 }
 
+output "database_subnet_ids" {
+  description = "IDs of the isolated database subnets"
+  value       = module.vpc.database_subnet_ids
+}
+
 ##########################################
 # ALB Outputs
 ##########################################

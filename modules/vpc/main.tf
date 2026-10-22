@@ -121,6 +121,49 @@ resource "aws_route_table_association" "private" {
 
 
 ##################################
+# Database subnet definition
+##################################
+resource "aws_subnet" "database" {
+  for_each = toset(var.database_subnet_cidrs)
+
+  vpc_id     = aws_vpc.this.id
+  cidr_block = each.value
+
+  availability_zone = element(
+    var.availability_zones,
+    index(var.database_subnet_cidrs, each.value)
+  )
+
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name        = "${var.environment}-database-${each.value}"
+    Tier        = "database"
+    Environment = var.environment
+  }
+}
+
+# No default route is added to this route table. VPC-local routing remains
+# available so application resources can connect to the database privately.
+resource "aws_route_table" "database" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name        = "${var.environment}-database-rt"
+    Tier        = "database"
+    Environment = var.environment
+  }
+}
+
+resource "aws_route_table_association" "database" {
+  for_each = aws_subnet.database
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.database.id
+}
+
+
+##################################
 # Private Subnet definition
 ##################################
 

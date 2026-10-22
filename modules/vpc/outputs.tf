@@ -30,3 +30,12 @@ output "private_subnet_ids" {
   ]
 }
 
+output "database_subnet_ids" {
+  description = "IDs of the isolated database subnets"
+
+  value = [
+    for subnet in aws_subnet.database :
+    subnet.id
+  ]
+}
+

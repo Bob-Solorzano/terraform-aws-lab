@@ -47,6 +47,11 @@ variable "private_subnet_cidrs" {
   type        = list(string)
 }
 
+variable "database_subnet_cidrs" {
+  description = "CIDR blocks used to create isolated database subnets within the VPC."
+  type        = list(string)
+}
+
 #  Security Groups Variables
 variable "security_groups" {
   description = "Security Groups to create"
