@@ -52,6 +52,48 @@ variable "database_subnet_cidrs" {
   type        = list(string)
 }
 
+variable "database_name" {
+  description = "Name of the initial PostgreSQL database."
+  type        = string
+  default     = "inventory"
+}
+
+variable "database_master_username" {
+  description = "Master username for the PostgreSQL instance. RDS manages its password."
+  type        = string
+  default     = "dbadmin"
+}
+
+variable "database_instance_class" {
+  description = "RDS instance class for the dev database."
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "database_allocated_storage" {
+  description = "Initial RDS storage in GiB."
+  type        = number
+  default     = 20
+}
+
+variable "database_max_allocated_storage" {
+  description = "Maximum RDS storage in GiB for autoscaling."
+  type        = number
+  default     = 100
+}
+
+variable "database_backup_retention_period" {
+  description = "Number of days to retain automated database backups."
+  type        = number
+  default     = 7
+}
+
+variable "database_multi_az" {
+  description = "Whether to enable Multi-AZ for the dev database."
+  type        = bool
+  default     = false
+}
+
 #  Security Groups Variables
 variable "security_groups" {
   description = "Security Groups to create"

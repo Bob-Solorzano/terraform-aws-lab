@@ -68,6 +68,11 @@ security_groups = {
     description = "Database Servers"
   }
 
+  api_lambda = {
+    name        = "api-lambda-sg"
+    description = "Lambda functions for the inventory API"
+  }
+
 }
 
 
@@ -89,12 +94,12 @@ ingress_sg_rules = {
     port                  = "80",  # To and From ports
     protocol              = "tcp"  # IP Protocol
   }
-  db_from_web = {
-    security_group        = "db",   # security group
-    rule_type             = "sg",   # specify this as cidr or sg rule.
-    source_security_group = "web"   # Reference Security Groups
-    port                  = "5432", # To and From ports - PostgreSQL port
-    protocol              = "tcp"   # IP Protocol
+  db_from_lambda = {
+    security_group        = "db",        # security group
+    rule_type             = "sg",        # specify this as cidr or sg rule.
+    source_security_group = "api_lambda" # Reference Security Groups
+    port                  = "5432",      # To and From ports - PostgreSQL port
+    protocol              = "tcp"        # IP Protocol
   }
 }
 
@@ -107,6 +112,12 @@ egress_sg_rules = {
   }
   web_all_out = {
     security_group = "web"
+    rule_type      = "cidr"
+    cidr           = "0.0.0.0/0"
+    protocol       = "-1"
+  }
+  lambda_all_out = {
+    security_group = "api_lambda"
     rule_type      = "cidr"
     cidr           = "0.0.0.0/0"
     protocol       = "-1"

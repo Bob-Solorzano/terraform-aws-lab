@@ -46,6 +46,23 @@ module "security" {
   egress_sg_rules  = var.egress_sg_rules
 }
 
+module "rds" {
+  source = "../../modules/rds"
+
+  environment             = var.environment
+  identifier              = "${var.environment}-inventory-db"
+  database_name           = var.database_name
+  master_username         = var.database_master_username
+  instance_class          = var.database_instance_class
+  allocated_storage       = var.database_allocated_storage
+  max_allocated_storage   = var.database_max_allocated_storage
+  backup_retention_period = var.database_backup_retention_period
+  multi_az                = var.database_multi_az
+
+  subnet_ids            = module.vpc.database_subnet_ids
+  vpc_security_group_id = module.security.db_security_group_id
+}
+
 module "alb" {
   # Global Variables
   environment        = var.environment

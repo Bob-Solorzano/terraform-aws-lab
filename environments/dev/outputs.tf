@@ -89,3 +89,31 @@ output "web_security_group_id" {
 output "db_security_group_id" {
   value = module.security.db_security_group_id
 }
+
+output "lambda_security_group_id" {
+  value = module.security.lambda_security_group_id
+}
+
+output "database_identifier" {
+  value = module.rds.identifier
+}
+
+output "database_address" {
+  value = module.rds.address
+}
+
+output "database_endpoint" {
+  value = module.rds.endpoint
+}
+
+output "database_port" {
+  value = module.rds.port
+}
+
+output "database_name" {
+  value = module.rds.database_name
+}
+
+output "database_master_user_secret_arn" {
+  value = module.rds.master_user_secret_arn
+}
