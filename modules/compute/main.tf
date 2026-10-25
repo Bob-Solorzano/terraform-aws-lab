@@ -39,14 +39,6 @@ resource "aws_iam_role_policy_attachment" "cloudwatchagent" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-# Attache S3 Full privs to the IAM Role
-resource "aws_iam_role_policy_attachment" "s3" {
-
-  role = aws_iam_role.web.name
-
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
-
 ##########################################
 # Launch Template.
 ##########################################
