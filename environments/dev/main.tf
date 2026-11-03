@@ -47,10 +47,11 @@ module "security" {
 }
 
 module "rds" {
+  count  = var.enable_rds ? 1 : 0
   source = "../../modules/rds"
 
   environment             = var.environment
-  identifier              = "${var.environment}-inventory-db"
+  identifier              = "${var.environment}-diagnostics-db"
   database_name           = var.database_name
   master_username         = var.database_master_username
   instance_class          = var.database_instance_class
@@ -58,6 +59,8 @@ module "rds" {
   max_allocated_storage   = var.database_max_allocated_storage
   backup_retention_period = var.database_backup_retention_period
   multi_az                = var.database_multi_az
+  deletion_protection     = var.database_deletion_protection
+  skip_final_snapshot     = var.database_skip_final_snapshot
 
   subnet_ids            = module.vpc.database_subnet_ids
   vpc_security_group_id = module.security.db_security_group_id
@@ -110,4 +113,19 @@ module "compute" {
   asg_desired_capacity = var.asg_desired_capacity
   asg_max_size         = var.asg_max_size
   asg_min_size         = var.asg_min_size
+}
+
+######################################################
+# Temporary PostgreSQL administration host
+######################################################
+module "db_admin" {
+  count  = var.enable_rds && var.enable_db_admin_host ? 1 : 0
+  source = "../../modules/db_admin"
+
+  environment                = var.environment
+  vpc_id                     = module.vpc.vpc_id
+  subnet_id                  = module.vpc.private_subnet_ids[0]
+  ami_id                     = data.aws_ssm_parameter.amazon_linux.value
+  database_security_group_id = module.security.db_security_group_id
+  instance_type              = var.db_admin_instance_type
 }

@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+
+# AL2023 normally ships with SSM Agent; enable it explicitly for this host.
+systemctl enable --now amazon-ssm-agent
+
+# Install the CloudWatch agent from the Amazon Linux 2023 package repository.
+dnf install -y amazon-cloudwatch-agent
+
+install -d -m 0755 /opt/aws/amazon-cloudwatch-agent/etc
+cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWCONFIG'
+${cloudwatch_agent_config}
+CWCONFIG
+
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
+  -s

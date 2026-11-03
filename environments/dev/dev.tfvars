@@ -47,6 +47,33 @@ database_subnet_cidrs = [
 ]
 
 #############################################
+# RDS PostgreSQL Configuration
+#############################################
+
+# Optional RDS infrastructure for the future AWS Troubleshooting API.
+# No application services currently interact with this database.
+enable_rds = false
+
+database_name                    = "diagnostics"
+database_instance_class          = "db.t3.micro"
+database_allocated_storage       = 20
+database_max_allocated_storage   = 50
+database_backup_retention_period = 1
+database_multi_az                = false
+database_deletion_protection     = false
+database_skip_final_snapshot     = true
+
+
+#############################################
+# Database Administration Host
+#############################################
+
+# Temporary private EC2 host for PostgreSQL administration through SSM.
+# Requires enable_rds = true.
+enable_db_admin_host   = false
+db_admin_instance_type = "t3.micro"
+
+#############################################
 # Security Settings
 #############################################
 
@@ -70,7 +97,7 @@ security_groups = {
 
   api_lambda = {
     name        = "api-lambda-sg"
-    description = "Lambda functions for the inventory API"
+    description = "Lambda functions for the diagnostics API"
   }
 
 }

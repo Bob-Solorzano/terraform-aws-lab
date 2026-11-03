@@ -55,7 +55,13 @@ variable "database_subnet_cidrs" {
 variable "database_name" {
   description = "Name of the initial PostgreSQL database."
   type        = string
-  default     = "inventory"
+  default     = "diagnostics"
+}
+
+variable "enable_rds" {
+  description = "Whether to create the optional PostgreSQL RDS instance."
+  type        = bool
+  default     = false
 }
 
 variable "database_master_username" {
@@ -92,6 +98,30 @@ variable "database_multi_az" {
   description = "Whether to enable Multi-AZ for the dev database."
   type        = bool
   default     = false
+}
+
+variable "database_deletion_protection" {
+  description = "Whether to prevent accidental deletion of the RDS database."
+  type        = bool
+  default     = false
+}
+
+variable "database_skip_final_snapshot" {
+  description = "Whether to skip the final snapshot when destroying the RDS database."
+  type        = bool
+  default     = true
+}
+
+variable "enable_db_admin_host" {
+  description = "Whether to create the temporary SSM-managed PostgreSQL administration host."
+  type        = bool
+  default     = false
+}
+
+variable "db_admin_instance_type" {
+  description = "EC2 instance type for the temporary database administration host."
+  type        = string
+  default     = "t3.micro"
 }
 
 #  Security Groups Variables

@@ -11,7 +11,7 @@ variable "identifier" {
 variable "database_name" {
   description = "Name of the initial PostgreSQL database."
   type        = string
-  default     = "inventory"
+  default     = "diagnostics"
 }
 
 variable "master_username" {

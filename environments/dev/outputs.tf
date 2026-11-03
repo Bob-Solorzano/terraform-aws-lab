@@ -95,25 +95,30 @@ output "lambda_security_group_id" {
 }
 
 output "database_identifier" {
-  value = module.rds.identifier
+  value = try(module.rds[0].identifier, null)
 }
 
 output "database_address" {
-  value = module.rds.address
+  value = try(module.rds[0].address, null)
 }
 
 output "database_endpoint" {
-  value = module.rds.endpoint
+  value = try(module.rds[0].endpoint, null)
 }
 
 output "database_port" {
-  value = module.rds.port
+  value = try(module.rds[0].port, null)
 }
 
 output "database_name" {
-  value = module.rds.database_name
+  value = try(module.rds[0].database_name, null)
 }
 
 output "database_master_user_secret_arn" {
-  value = module.rds.master_user_secret_arn
+  value = try(module.rds[0].master_user_secret_arn, null)
+}
+
+output "db_admin_instance_id" {
+  description = "Instance ID of the optional SSM-managed PostgreSQL admin host."
+  value       = try(module.db_admin[0].instance_id, null)
 }
