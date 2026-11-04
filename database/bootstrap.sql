@@ -1,7 +1,7 @@
 \set ON_ERROR_STOP on
 
--- Bootstrap the diagnostics schema and application access roles.
--- Run while connected to the diagnostics database as dbadmin.
+-- Bootstrap the application schema and access roles in the aws_tools database.
+-- Run while connected to the aws_tools database as dbadmin.
 -- This script intentionally contains no passwords.
 
 -- PostgreSQL roles are cluster-wide. Create them only if they do not exist.
@@ -20,9 +20,9 @@ WHERE NOT EXISTS (
 ALTER ROLE app_owner NOLOGIN;
 ALTER ROLE app_user LOGIN;
 
-GRANT CONNECT ON DATABASE diagnostics TO app_user;
+GRANT CONNECT ON DATABASE aws_tools TO app_user;
 -- app_owner is NOLOGIN and needs CREATE on this database to own the app schema.
-GRANT CREATE ON DATABASE diagnostics TO app_owner;
+GRANT CREATE ON DATABASE aws_tools TO app_owner;
 
 -- Let dbadmin create future schema objects as app_owner with SET ROLE.
 GRANT app_owner TO dbadmin;
@@ -31,6 +31,15 @@ BEGIN;
 SET ROLE app_owner;
 
 CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION app_owner;
+
+-- Create the initial diagnostics table.
+CREATE TABLE IF NOT EXISTS app.diagnostic_runs (
+    run_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    check_name TEXT NOT NULL,
+    status TEXT NOT NULL,
+    details TEXT,
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
 -- Future diagnostics API table and index creation DDL goes here.
 -- Create objects as app_owner so default privileges apply to app_user.

@@ -51,7 +51,7 @@ module "rds" {
   source = "../../modules/rds"
 
   environment             = var.environment
-  identifier              = "${var.environment}-diagnostics-db"
+  identifier              = "${var.environment}-aws-tools-db"
   database_name           = var.database_name
   master_username         = var.database_master_username
   instance_class          = var.database_instance_class

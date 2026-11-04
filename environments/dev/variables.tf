@@ -55,7 +55,7 @@ variable "database_subnet_cidrs" {
 variable "database_name" {
   description = "Name of the initial PostgreSQL database."
   type        = string
-  default     = "diagnostics"
+  default     = "aws_tools"
 }
 
 variable "enable_rds" {

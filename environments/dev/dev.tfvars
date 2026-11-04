@@ -54,7 +54,7 @@ database_subnet_cidrs = [
 # No application services currently interact with this database.
 enable_rds = false
 
-database_name                    = "diagnostics"
+database_name                    = "aws_tools"
 database_instance_class          = "db.t3.micro"
 database_allocated_storage       = 20
 database_max_allocated_storage   = 50
